@@ -34,12 +34,12 @@ Data Packet: Each data packet above will be written to disk and persisted every 
 
 ```
 		{
-		  "device_id": "A4:C1:38:7B:92:11",
-		  "deployment_id": "dep_D7kP3zQ9mXaL2vRb",
-		  "data_counter": 918273,
+		  "device_id": "A4:C1:38:7B:92:11", // (physical) MAC address
+		  "deployment_id": "dep_D7kP3zQ9mXaL2vRb", // (logical) configurable id for re-deployment
+		  "data_counter": 918273, /
 		  "device_timestamp_ms": 1779123456789,
 		  "boot_id": "8a6dbe0d5af0e1bc",
-		  "boot_counter: 31,
+		  "boot_counter: 31, // how many times the device has rebooted. Each boot_counter will have it's respective boot_id and vice versa
 		  "uptime_sec": 4444,
 		  "WiFi_RSSI_dBm": -61,
 		  "NOXindex_0-500": 87,
