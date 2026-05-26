@@ -62,17 +62,30 @@ func handlePostMetrics(pool *pgxpool.Pool) http.HandlerFunc {
 		}
 
 		/**
-			happy case (if existing data_counter is lt m.data_counter)
+		/hello:
+		- establish an initialization data, data_counter, MAC address etc.
+		- server response with hwm, server_time
+
+		/insert
+
+		/metrics (debug)
+
+
+			happy case (if incoming data_counter is gt last_data_hwm)
+				// check if the device exist
 				step 1: process batch data
-				step 2: only insert data points up to the HWM (pgx.Tx  or  CopyFrom), ON CONFLICT DO NOTHING
-				step 3: response with: server_time, data_counter
+				step 2: insert data points up to the HWM (pgx.Tx  or  CopyFrom), ON CONFLICT DO NOTHING
+				step 3: response with: server_time, last_data_hwm
 
-			case 1: (if existing data_counter is gt m.data_counter)
-				step 1: disregard the incoming data and response with : server_time, and the existing data_counter
+			case 1: (if incoming data_counter is lt last_data_hwm)
+				step 1: disregard the incoming data and response with : server_time, and last_data_hwm
 
-			case 2: when data_counter = 1 (or 0?)
+			case 2: very first data point, when data_counter = 1 (or 0?)
 
-			case 3: when data_counter is not continuous (i.e., 1, 2, 4, 5), which indicate hardware issue
+			case 3: when there's a gap in data_counter (i.e., 1, 2, 4, 5), which indicate hardware issue
+				step 1: mark is_broken = true,
+				step 2: trace device_id in the event table?
+				step 3: response with: server_time, last_data_hwm?
 
 		**/
 

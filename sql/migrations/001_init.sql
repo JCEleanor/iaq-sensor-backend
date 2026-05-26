@@ -6,7 +6,7 @@ DROP TABLE IF EXISTS devices;
 
 -- 1. Device Table: Tracks physical hardware and its current logical assignment.
 CREATE TABLE devices (
-    device_id TEXT PRIMARY KEY,       -- MAC Address (e.g., 'A4:C1:38:7B:92:11'). NOTE: MACADDR or TEXT?
+    device_id TEXT PRIMARY KEY,       -- MAC Address (e.g., 'A4:C1:38:7B:92:11')
     deployment_id TEXT NOT NULL,         -- Logical ID (e.g., 'dep_D7kP3zQ9mXaL2vRb')
     device_name TEXT,                    -- Human readable name (e.g., 'IAQ0014')
     device_type TEXT,                    -- Hardware model (e.g., 'IAQ-SEN66-NOX')
@@ -24,7 +24,7 @@ CREATE TABLE devices (
 -- 2. Sensor Data Table (Hypertable): Stores the high-frequency IAQ metrics.
 CREATE TABLE sensor_data (
     time TIMESTAMPTZ NOT NULL,           -- Derived from device_timestamp_ms (for partitioning)
-    server_time TIMESTAMPTZ DEFAULT NOW(),-- NOTE: When the record was actually received, send back to devices
+    server_time TIMESTAMPTZ DEFAULT NOW(),-- When the record was actually received, send back to devices
     device_id TEXT NOT NULL REFERENCES devices(device_id),
     deployment_id TEXT NOT NULL,         -- Denormalized for easier historical querying
     data_counter BIGINT NOT NULL,        -- Monotonic counter for HWM tracking
